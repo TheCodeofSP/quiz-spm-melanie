@@ -1,0 +1,15 @@
+.quiz-question {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.quiz-question__step {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.quiz-question__answers {
+  display: grid;
+  gap: var(--space-sm);
+}

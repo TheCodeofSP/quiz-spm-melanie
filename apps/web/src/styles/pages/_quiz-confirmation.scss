@@ -1,0 +1,25 @@
+.quiz-confirmation {
+  display: grid;
+  align-content: center;
+    gap: var(--space-md);
+
+
+  min-height: 70vh;
+}
+
+.quiz-confirmation .card {
+  display: grid;
+  gap: var(--space-md);
+
+  text-align: center;
+}
+
+.quiz-confirmation__spam {
+  color: var(--color-pink-dark);
+  font-weight: 600;
+}
+
+.quiz-confirmation__confidentiality {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}

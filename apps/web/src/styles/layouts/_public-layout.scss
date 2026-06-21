@@ -1,0 +1,24 @@
+.public-layout {
+  width: 100%;
+  min-height: 100vh;
+  overflow: visible;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      var(--color-pink-soft),
+      transparent 32rem
+    ),
+    radial-gradient(
+      circle at bottom right,
+      var(--color-green-soft),
+      transparent 28rem
+    ),
+    var(--color-background);
+}
+
+.public-layout__content {
+  width: min(100% - 2rem, 760px);
+  margin-inline: auto;
+  padding-block: var(--space-lg);
+}

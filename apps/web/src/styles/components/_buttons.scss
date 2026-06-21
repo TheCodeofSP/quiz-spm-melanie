@@ -1,0 +1,50 @@
+@use "../abstracts/mixins" as *;
+
+.btn {
+  @include button-base;
+}
+
+.btn-primary {
+  @include button-base;
+
+  background: var(--color-pink);
+  color: var(--color-white);
+
+  &:hover {
+    background: var(--color-pink-dark);
+  }
+}
+
+.btn-secondary {
+  @include button-base;
+
+  background: var(--color-green-soft);
+  color: var(--color-green-dark);
+
+  &:hover {
+    background: var(--color-green);
+    color: var(--color-white);
+  }
+}
+
+.btn-outline {
+  @include button-base;
+
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  color: var(--color-text);
+  width: auto;
+  margin: auto;
+
+  &:hover {
+    border-color: var(--color-pink);
+    color: var(--color-pink-dark);
+  }
+}
+
+.btn-danger {
+  @include button-base;
+
+  background: var(--color-danger);
+  color: var(--color-white);
+}

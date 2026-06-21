@@ -1,0 +1,32 @@
+@use "./abstracts/variables.scss";
+@use "./abstracts/mixins.scss";
+@use "./abstracts/functions.scss";
+
+@use "./base/reset.scss";
+@use "./base/global.scss";
+@use "./base/typography.scss";
+@use "./base/utilities.scss";
+
+@use "./animations/animations.scss";
+
+@use "./components/buttons.scss";
+@use "./components/cards.scss";
+@use "./components/forms.scss";
+@use "./components/progress-bar.scss";
+@use "./components/badges.scss";
+@use "./components/tables.scss";
+@use "./components/quiz-header.scss";
+
+@use "./layouts/public-layout.scss";
+@use "./layouts/admin-layout.scss";
+
+@use "./pages/quiz-home.scss";
+@use "./pages/quiz-question.scss";
+@use "./pages/quiz-contact.scss";
+@use "./pages/quiz-confirmation.scss";
+
+@use "./pages/admin-dashboard.scss";
+@use "./pages/admin-prospects.scss";
+@use "./pages/admin-prospect-details.scss";
+@use "./pages/admin-export.scss";
+@use "./pages/admin-statistics.scss";

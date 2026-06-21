@@ -1,0 +1,34 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+  padding: 0.35rem 0.75rem;
+
+  border-radius: var(--radius-pill);
+
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-pink {
+  background-color: transparent;
+  padding: 0;
+  margin: auto;
+  color: var(--color-pink);
+}
+
+.badge-green {
+  background: var(--color-green-soft);
+  color: var(--color-green-dark);
+}
+
+.badge-warning {
+  background: #fff3d8;
+  color: #9a6a1d;
+}
+
+.badge-danger {
+  background: #f8dddd;
+  color: #9f3d3d;
+}

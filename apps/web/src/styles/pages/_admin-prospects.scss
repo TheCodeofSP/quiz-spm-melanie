@@ -1,0 +1,46 @@
+.admin-prospects {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.admin-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+
+  th,
+  td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  th {
+    color: var(--color-green-dark);
+    font-size: 0.95rem;
+    font-weight: 700;
+    background: var(--color-background-soft);
+  }
+
+  td {
+    color: var(--color-text);
+    font-size: 0.95rem;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.admin-table__link {
+  color: var(--color-green-dark);
+  font-weight: 600;
+}

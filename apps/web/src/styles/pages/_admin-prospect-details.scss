@@ -1,0 +1,59 @@
+.admin-prospect-details {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.admin-prospect-grid {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.admin-panel {
+  display: grid;
+  gap: var(--space-md);
+
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+}
+
+.admin-details-list,
+.admin-answer-list,
+.admin-history-list {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.admin-history-list li {
+  display: grid;
+  gap: 0.25rem;
+
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  strong {
+    color: var(--color-green-dark);
+    font-size: 0.9rem;
+  }
+
+  span {
+    color: var(--color-text);
+  }
+}
+
+.admin-note-form {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 768px) {
+  .admin-prospect-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

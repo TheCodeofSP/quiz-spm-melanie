@@ -1,0 +1,29 @@
+.quiz-home {
+  display: grid;
+  gap: var(--space-md);
+
+  min-height: 70vh;
+  align-content: center;
+
+  text-align: center;
+
+  h1 {
+    max-width: 10ch;
+    margin-inline: auto;
+  }
+}
+
+.quiz-home__intro {
+  max-width: 42rem;
+  margin-inline: auto;
+
+  color: var(--color-muted);
+}
+
+.quiz-home__info {
+  display: grid;
+  gap: var(--space-sm);
+
+  text-align: left;
+}
+

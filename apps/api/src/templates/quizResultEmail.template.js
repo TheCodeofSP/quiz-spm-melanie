@@ -42,6 +42,8 @@ const buildProfileBlock = (profileKey) => {
 };
 
 const buildResultBlock = ({ profileTitles, isMixedProfile }) => {
+  console.log("MELANIE_PHOTO_URL =", melaniePhotoUrl);
+
   const melaniePhotoUrl = process.env.MELANIE_PHOTO_URL;
 
   const resultSentence = isMixedProfile

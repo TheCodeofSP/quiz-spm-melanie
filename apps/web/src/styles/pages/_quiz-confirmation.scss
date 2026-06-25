@@ -23,3 +23,16 @@
   color: var(--color-muted);
   font-size: 0.95rem;
 }
+
+.quiz-confirmation__content {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.quiz-confirmation__disclaimer {
+  padding-top: var(--space-sm);
+
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}

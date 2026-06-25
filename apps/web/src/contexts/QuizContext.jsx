@@ -10,6 +10,7 @@ const initialContact = {
   hormonalContraceptionName: "",
   emailConsent: false,
   contactConsent: false,
+  newsletterConsent: false,
 };
 
 export function QuizProvider({ children }) {

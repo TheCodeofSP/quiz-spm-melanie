@@ -1,7 +1,18 @@
 const profileContents = require("../data/profileContents");
 
+const COLORS = {
+  background: "#fffaf7",
+  text: "#2f2a2a",
+  muted: "#6f6666",
+  pink: "#d98fa3",
+  pinkSoft: "#f8e5eb",
+  pinkDark: "#b96f84",
+  greenDark: "#4f7158",
+  border: "#eadeda",
+};
+
 const separator = `
-  <div style="height: 1px; background: #e8dfd8; margin: 32px 0;"></div>
+  <div style="height: 1px; background: ${COLORS.border}; margin: 40px 0;"></div>
 `;
 
 const buildProfileBlock = (profileKey) => {
@@ -10,77 +21,175 @@ const buildProfileBlock = (profileKey) => {
   if (!content) return "";
 
   return `
-    <section style="margin-top: 24px;">
-      <h2 style="color: #8b6a5f; font-size: 24px; line-height: 1.3; margin: 0 0 16px;">
-        🌸 SPM « ${content.title} »
+    <section>
+      <p style="font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: ${COLORS.pinkDark}; margin: 0 0 10px; font-weight: bold;">
+        Ton profil en détail
+      </p>
+
+      <h2 style="color: ${COLORS.text}; font-size: 28px; line-height: 1.25; margin: 0 0 18px;">
+        SPM « ${content.title} »
       </h2>
 
-      <p style="font-size: 16px; line-height: 1.8; margin: 0 0 20px;">
+      <p style="font-size: 17px; line-height: 1.9; margin: 0 0 24px; color: ${COLORS.muted};">
         ${content.intro}
       </p>
 
-      <div style="font-size: 16px; line-height: 1.8;">
+      <div style="font-size: 16px; line-height: 1.9; color: ${COLORS.text};">
         ${content.body}
       </div>
     </section>
   `;
 };
 
-const buildQuizResultEmail = ({ firstName, profiles }) => {
-  const isMixedProfile = profiles.length > 1;
+const buildResultBlock = ({ profileTitles, isMixedProfile }) => {
+  const melaniePhotoUrl = process.env.MELANIE_PHOTO_URL;
 
-  const profileTitles = profiles
+  const resultSentence = isMixedProfile
+    ? `Ton profil semble mélanger plusieurs tendances : ${profileTitles.join(" + ")}.`
+    : `Ton profil est : ${profileTitles[0]}.`;
+
+  return `
+    <section>
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+          ${
+            melaniePhotoUrl
+              ? `
+                <td width="96" valign="top" style="padding-right: 20px;">
+                  <img
+                    src="${melaniePhotoUrl}"
+                    alt="Portrait de Mélanie Dizet"
+                    width="78"
+                    height="78"
+                    style="display: block; width: 78px; height: 78px; object-fit: cover; border-radius: 50%; border: 4px solid ${COLORS.pinkSoft};"
+                  />
+                </td>
+              `
+              : ""
+          }
+
+          <td valign="top">
+            <p style="font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: ${COLORS.pinkDark}; margin: 0 0 10px; font-weight: bold;">
+              Ce que ton test révèle
+            </p>
+
+            <h1 style="color: ${COLORS.text}; font-size: 31px; line-height: 1.25; margin: 0 0 16px;">
+              “${resultSentence}”
+            </h1>
+
+            <p style="font-size: 16px; line-height: 1.9; margin: 0; color: ${COLORS.muted};">
+              Ce résultat n’est pas une étiquette. C’est une première lecture de ce que ton corps semble exprimer à travers ton SPM.
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      ${
+        isMixedProfile
+          ? `
+            <p style="font-size: 16px; line-height: 1.9; margin: 24px 0 0; color: ${COLORS.text};">
+              Quand plusieurs profils ressortent, cela signifie souvent que ton corps parle sur plusieurs plans à la fois : émotionnel, hormonal, nerveux ou physique.
+            </p>
+          `
+          : ""
+      }
+    </section>
+  `;
+};
+
+const buildCtaBlock = ({ mainProfileContent, isMixedProfile }) => {
+  const title = isMixedProfile
+    ? "Et si on regardait cela ensemble ?"
+    : mainProfileContent?.ctaTitle || "Et si on regardait cela ensemble ?";
+
+  const text = isMixedProfile
+    ? "Si tu ressens que ce résultat fait écho à ce que tu vis, tu peux réserver un appel découverte gratuit. Ce sera un espace pour poser des mots sur tes symptômes, ton cycle et ce que ton corps essaie peut-être de te signaler."
+    : mainProfileContent?.ctaText ||
+      "Si tu ressens que ce résultat fait écho à ce que tu vis, tu peux réserver un appel découverte gratuit avec Mélanie.";
+
+  const button =
+    mainProfileContent?.ctaButton || "Réserver mon appel découverte";
+
+  return `
+    <section>
+      <p style="font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: ${COLORS.greenDark}; margin: 0 0 10px; font-weight: bold;">
+        Aller plus loin
+      </p>
+
+      <h2 style="color: ${COLORS.text}; font-size: 27px; line-height: 1.3; margin: 0 0 18px;">
+        ${title}
+      </h2>
+
+      <p style="font-size: 16px; line-height: 1.9; margin: 0 0 26px; color: ${COLORS.text};">
+        ${text}
+      </p>
+
+      <p style="margin: 0;">
+        <a href="${process.env.BOOKING_URL || "#"}"
+           style="display: inline-block; padding: 14px 24px; background: ${COLORS.pink}; color: #ffffff; text-decoration: none; border-radius: 999px; font-size: 15px; font-weight: bold;">
+          ${button}
+        </a>
+      </p>
+    </section>
+  `;
+};
+
+const buildQuizResultEmail = ({ firstName, profiles }) => {
+  const safeProfiles = Array.isArray(profiles) ? profiles : [];
+
+  const profileTitles = safeProfiles
     .map((profileKey) => profileContents[profileKey]?.title)
     .filter(Boolean);
 
-  const profileBlocks = profiles.map(buildProfileBlock).join(separator);
+  const isMixedProfile = profileTitles.length > 1;
+  const mainProfileContent =
+    safeProfiles.length === 1 ? profileContents[safeProfiles[0]] : null;
+
+  const profileBlocks = safeProfiles.map(buildProfileBlock).join(separator);
+
+  const disclaimer =
+    mainProfileContent?.disclaimer ||
+    "Ce quiz n’est pas un diagnostic médical. Si tes symptômes perturbent ton quotidien, pense à consulter un·e professionnel·le de santé.";
 
   return `
-    <div style="margin: 0; padding: 0; background: #faf8f6; font-family: Arial, sans-serif; color: #3d3733;">
-      <div style="margin: 0 auto; padding: 28px 20px;">
-        
-        <p style="font-size: 16px; line-height: 1.8; margin: 0 0 16px;">
+    <div style="margin: 0; padding: 0; background: ${COLORS.background}; font-family: Arial, sans-serif; color: ${COLORS.text};">
+      <div style="max-width: 680px; margin: 0 auto; padding: 42px 20px 48px;">
+
+        <div style="text-align: center; margin-bottom: 38px;">
+          <p style="font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: ${COLORS.pinkDark}; margin: 0 0 14px; font-weight: bold;">
+            Test de Personnalité SPM
+          </p>
+
+          <h1 style="font-size: 36px; line-height: 1.15; color: ${COLORS.text}; margin: 0 0 16px;">
+            Ton résultat personnalisé
+          </h1>
+
+          <p style="font-size: 16px; line-height: 1.8; color: ${COLORS.muted}; margin: 0;">
+            Une première lecture de ton cycle, de tes symptômes et des messages que ton corps peut t’envoyer.
+          </p>
+        </div>
+
+        <p style="font-size: 17px; line-height: 1.9; margin: 0 0 18px;">
           Bonjour ${firstName} 🌸
         </p>
 
-        <p style="font-size: 16px; line-height: 1.8; margin: 0 0 16px;">
-          Merci d’avoir pris le temps de réaliser le test SPM.
+        <p style="font-size: 16px; line-height: 1.9; margin: 0 0 18px;">
+          Merci d’avoir pris le temps de réaliser ce test. Les réponses que tu as partagées permettent de mieux comprendre la façon dont ton SPM se manifeste chez toi.
         </p>
 
-        <p style="font-size: 15px; line-height: 1.8; margin: 0 0 24px; color: #6f625c;">
-          Les réponses que tu as partagées dans ce questionnaire restent confidentielles et sont utilisées uniquement dans le cadre de l’accompagnement proposé par Mélanie.
+        <p style="font-size: 15px; line-height: 1.9; margin: 0; color: ${COLORS.muted};">
+          Elles restent confidentielles et sont utilisées uniquement dans le cadre de l’accompagnement proposé par Mélanie.
         </p>
 
         ${separator}
 
         ${
-          isMixedProfile
-            ? `
-              <p style="font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: #8b6a5f; margin: 0 0 8px;">
-                Ton profil de SPM
-              </p>
-
-              <h1 style="color: #3d3733; font-size: 30px; line-height: 1.25; margin: 0 0 16px;">
-                Plusieurs tendances ressortent
-              </h1>
-
-              <p style="font-size: 16px; line-height: 1.8; margin: 0;">
-                Ton résultat fait apparaître plusieurs profils principaux :
-                <strong>${profileTitles.join(" + ")}</strong>.
-              </p>
-
-              <p style="font-size: 16px; line-height: 1.8; margin: 16px 0 0;">
-                Cela signifie que ton expérience du SPM semble actuellement combiner plusieurs mécanismes émotionnels et corporels.
-              </p>
-            `
+          profileTitles.length
+            ? buildResultBlock({ profileTitles, isMixedProfile })
             : `
-              <p style="font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: #8b6a5f; margin: 0 0 8px;">
-                Ton profil de SPM
+              <p style="font-size: 16px; line-height: 1.9; margin: 0;">
+                Ton résultat a bien été reçu. Mélanie pourra t’aider à l’interpréter avec plus de précision.
               </p>
-
-              <h1 style="color: #3d3733; font-size: 30px; line-height: 1.25; margin: 0;">
-                ${profileTitles[0]}
-              </h1>
             `
         }
 
@@ -90,32 +199,17 @@ const buildQuizResultEmail = ({ firstName, profiles }) => {
 
         ${separator}
 
-        <section>
-          <h2 style="color: #8b6a5f; font-size: 22px; line-height: 1.3; margin: 0 0 16px;">
-            Et si tu prenais ce temps pour toi ?
-          </h2>
-
-          <p style="font-size: 16px; line-height: 1.8; margin: 0 0 24px;">
-            Si tu ressens le besoin d’aller plus loin dans la compréhension de ton cycle, tu peux réserver un appel découverte gratuit avec Mélanie.
-          </p>
-
-          <p style="margin: 0 0 32px;">
-            <a href="${process.env.BOOKING_URL || "#"}"
-               style="display: inline-block; padding: 12px 22px; background: #8b6a5f; color: #ffffff; text-decoration: none; border-radius: 999px; font-size: 15px; font-weight: bold;">
-              Réserver mon appel découverte
-            </a>
-          </p>
-        </section>
+        ${buildCtaBlock({ mainProfileContent, isMixedProfile })}
 
         ${separator}
 
-        <p style="font-size: 16px; line-height: 1.8; margin: 0 0 16px;">
-          Chaque petit pas vers toi est déjà une transformation 🌷<br />
+        <p style="font-size: 16px; line-height: 1.9; margin: 0 0 16px;">
+          Prends soin de toi, avec douceur 🌷<br />
           Mélanie
         </p>
 
         <p style="font-size: 13px; line-height: 1.7; color: #7a6a64; margin: 0;">
-          P.S. : Ce quiz n’est pas un diagnostic médical. Si tes symptômes perturbent ton quotidien, pense à consulter un·e professionnel·le de santé.
+          P.S. : ${disclaimer}
         </p>
       </div>
     </div>

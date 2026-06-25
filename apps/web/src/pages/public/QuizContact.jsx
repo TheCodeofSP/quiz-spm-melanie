@@ -34,7 +34,7 @@ export default function QuizContact() {
       newErrors.answers = validation.answersRequired;
     }
 
-    if (!contact.emailConsent || !contact.contactConsent) {
+    if (!contact.emailConsent) {
       newErrors.consent = validation.consentRequired;
     }
 
@@ -79,6 +79,7 @@ export default function QuizContact() {
         answers: buildFormattedAnswers(),
         consents: {
           resultEmail: contact.emailConsent,
+          newsletter: contact.newsletterConsent,
           contactPermission: contact.contactConsent,
         },
       });
@@ -217,9 +218,20 @@ export default function QuizContact() {
             }
           />
 
-          <label>{contactContent.consents.email}</label>
+          <label>{contactContent.consents.resultEmail}</label>
         </div>
+        
+        <div className="checkbox-field">
+          <input
+            type="checkbox"
+            checked={contact.newsletterConsent}
+            onChange={(event) =>
+              updateContact("newsletterConsent", event.target.checked)
+            }
+          />
 
+          <label>{contactContent.consents.newsletter}</label>
+        </div>
         <div className="checkbox-field">
           <input
             type="checkbox"

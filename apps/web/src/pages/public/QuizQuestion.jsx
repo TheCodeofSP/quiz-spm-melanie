@@ -13,35 +13,84 @@ export default function QuizQuestion() {
 
   const { answers, saveAnswer } = useQuiz();
 
-  const currentQuestionNumber = Number(questionNumber);
+  const currentStepNumber = Number(questionNumber);
+  const currentStep = questionsContent.steps[currentStepNumber - 1];
+
   const totalQuestions = questionsContent.questions.length;
-  const question = questionsContent.questions[currentQuestionNumber - 1];
+  const totalCategories = questionsContent.steps.filter(
+    (step) => step.type === "category",
+  ).length;
+
+  if (!currentStep) {
+    return <h1>{questionsContent.page.notFound}</h1>;
+  }
+
+  const goToPreviousStep = () => {
+    if (currentStepNumber === 1) {
+      navigate("/quiz-spm");
+      return;
+    }
+
+    navigate(`/quiz-spm/questions/${currentStepNumber - 1}`);
+  };
+
+  const goToNextStep = () => {
+    const isLastStep = currentStepNumber === questionsContent.steps.length;
+
+    if (isLastStep) {
+      navigate("/quiz-spm/contact");
+      return;
+    }
+
+    navigate(`/quiz-spm/questions/${currentStepNumber + 1}`);
+  };
+
+  const getQuestionProgressNumber = () => {
+    const previousSteps = questionsContent.steps.slice(0, currentStepNumber);
+
+    return previousSteps.filter((step) => step.type === "question").length;
+  };
+
+  if (currentStep.type === "category") {
+    return (
+      <section className="quiz-question quiz-question--category animate-slide-up">
+        <QuizHeader />
+
+        <span className="quiz-question__step">
+          Étape {currentStep.stepNumber} sur {totalCategories}
+        </span>
+
+        <div className="quiz-question__category-card">
+          <h2>{currentStep.title}</h2>
+
+          <p>{currentStep.description}</p>
+        </div>
+
+        <button type="button" className="btn-primary" onClick={goToNextStep}>
+          Continuer
+        </button>
+
+        <button
+          type="button"
+          className="btn-outline"
+          onClick={goToPreviousStep}
+        >
+          {questionsContent.page.backButton}
+        </button>
+      </section>
+    );
+  }
+
+  const question = questionsContent.questions.find(
+    (item) => item.id === currentStep.questionId,
+  );
 
   if (!question) {
     return <h1>{questionsContent.page.notFound}</h1>;
   }
 
+  const currentQuestionProgressNumber = getQuestionProgressNumber();
   const selectedAnswer = answers[question.id];
-
-  const goToPreviousQuestion = () => {
-    if (currentQuestionNumber === 1) {
-      navigate("/quiz-spm");
-      return;
-    }
-
-    navigate(`/quiz-spm/questions/${currentQuestionNumber - 1}`);
-  };
-
-  const goToNextStep = () => {
-    const isLastQuestion = currentQuestionNumber === totalQuestions;
-
-    if (isLastQuestion) {
-      navigate("/quiz-spm/contact");
-      return;
-    }
-
-    navigate(`/quiz-spm/questions/${currentQuestionNumber + 1}`);
-  };
 
   const handleAnswerSelect = (answer) => {
     saveAnswer(question.id, {
@@ -49,7 +98,7 @@ export default function QuizQuestion() {
       question: question.question,
       answerKey: answer.key,
       answerLabel: answer.label,
-      profile: answer.profile,
+      profiles: answer.profiles,
     });
 
     goToNextStep();
@@ -67,12 +116,12 @@ export default function QuizQuestion() {
       <QuizHeader />
 
       <span className="quiz-question__step">
-        {questionsContent.page.progressLabel} {currentQuestionNumber}{" "}
+        {questionsContent.page.progressLabel} {currentQuestionProgressNumber}{" "}
         {questionsContent.page.progressSeparator} {totalQuestions}
       </span>
 
       <ProgressBar
-        currentQuestion={currentQuestionNumber}
+        currentQuestion={currentQuestionProgressNumber}
         totalQuestions={totalQuestions}
       />
 
@@ -89,7 +138,7 @@ export default function QuizQuestion() {
         ))}
       </div>
 
-      <button type="button" className="btn-outline" onClick={goToPreviousQuestion}>
+      <button type="button" className="btn-outline" onClick={goToPreviousStep}>
         {questionsContent.page.backButton}
       </button>
     </section>

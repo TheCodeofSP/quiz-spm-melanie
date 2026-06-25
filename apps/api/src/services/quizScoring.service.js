@@ -18,14 +18,12 @@ const calculateScores = (answers) => {
   const scores = { ...initialScores };
 
   answers.forEach((userAnswer) => {
-    const question = quizQuestions.find(
-      (q) => q.id === userAnswer.questionId
-    );
+    const question = quizQuestions.find((q) => q.id === userAnswer.questionId);
 
     if (!question) return;
 
     const selectedAnswer = question.answers.find(
-      (answer) => answer.key === userAnswer.answerKey
+      (answer) => answer.key === userAnswer.answerKey,
     );
 
     if (!selectedAnswer) return;
@@ -45,6 +43,10 @@ const calculateScores = (answers) => {
 const getProfilesFromScores = (scores) => {
   const highestScore = Math.max(...Object.values(scores));
 
+  if (highestScore === 0) {
+    return [];
+  }
+
   const profiles = Object.entries(profileToScoreKey)
     .filter(([, scoreKey]) => scores[scoreKey] === highestScore)
     .map(([profile]) => profile);
@@ -54,12 +56,10 @@ const getProfilesFromScores = (scores) => {
 
 const enrichAnswers = (answers) => {
   return answers.map((userAnswer) => {
-    const question = quizQuestions.find(
-      (q) => q.id === userAnswer.questionId
-    );
+    const question = quizQuestions.find((q) => q.id === userAnswer.questionId);
 
     const selectedAnswer = question?.answers.find(
-      (answer) => answer.key === userAnswer.answerKey
+      (answer) => answer.key === userAnswer.answerKey,
     );
 
     return {

@@ -151,7 +151,7 @@ export const adminContent = {
 
   layout: {
     brand: {
-      eyebrow: "Quiz SPM",
+      eyebrow: "Test de Personnalité SPM",
       title: "Admin Mélanie",
     },
 

@@ -13,12 +13,18 @@ export default function QuizConfirmation() {
 
       <h1>{confirmation.title}</h1>
 
-      <p>{confirmation.message}</p>
-      <p>{confirmation.spamReminder}</p>
-      <p>{confirmation.confidentiality}</p>
+      <div className="quiz-confirmation__content">
+        <p>{confirmation.message}</p>
+        <p>{confirmation.spamReminder}</p>
+        <p>{confirmation.confidentiality}</p>
 
-      <Link to="/quiz-spm" className="btn-outline">
-        {confirmation.backToHome}
+        <p className="quiz-confirmation__disclaimer">
+          {confirmation.medicalDisclaimer}
+        </p>
+      </div>
+
+      <Link to="https://melaniedizet.com/contact/" className="btn-outline">
+        {confirmation.backToContact}
       </Link>
     </section>
   );

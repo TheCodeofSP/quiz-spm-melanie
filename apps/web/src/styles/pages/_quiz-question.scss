@@ -13,3 +13,46 @@
   display: grid;
   gap: var(--space-sm);
 }
+
+.quiz-question--category {
+  text-align: center;
+}
+
+.quiz-question__category-card {
+  display: grid;
+  gap: var(--space-md);
+
+  padding: clamp(1.5rem, 5vw, 2.25rem);
+
+  border: 1px solid rgba(234, 222, 218, 0.9);
+  border-radius: var(--radius-lg);
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(248, 229, 235, 0.45)
+  );
+
+  box-shadow: var(--shadow-md);
+
+  h2 {
+    max-width: 16ch;
+    margin-inline: auto;
+
+    color: var(--color-pink-dark);
+    font-size: clamp(1.8rem, 7vw, 3rem);
+    line-height: 1.05;
+  }
+
+  p {
+    max-width: 34rem;
+    margin-inline: auto;
+
+    color: var(--color-muted);
+    line-height: 1.7;
+  }
+
+  .badge {
+    margin-inline: auto;
+  }
+}

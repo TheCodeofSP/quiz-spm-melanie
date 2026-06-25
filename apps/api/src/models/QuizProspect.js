@@ -136,9 +136,15 @@ const QuizProspectSchema = new mongoose.Schema(
         type: Boolean,
         required: true,
       },
+
+      newsletter: {
+        type: Boolean,
+        default: false,
+      },
+
       contactPermission: {
         type: Boolean,
-        required: true,
+        default: false,
       },
     },
 
